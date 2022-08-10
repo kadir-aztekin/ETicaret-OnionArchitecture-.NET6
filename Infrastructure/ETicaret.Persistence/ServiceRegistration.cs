@@ -24,16 +24,16 @@ namespace ETicaret.Persistence
         {
             service.AddSingleton<IProductService, ProductService>();
             service.AddDbContext<ETicaretDbContext>(options => options.UseNpgsql
-            ("User ID=postgres;Password=1234;Host=localhost;Port=5432;Database=ETicaretDb;"),ServiceLifetime.Singleton);
+            ("User ID=postgres;Password=1234;Host=localhost;Port=5432;Database=ETicaretDb;"));
 
-            service.AddSingleton<ICustomerReadRepository,CustomerReadRepository>();
-            service.AddSingleton<ICustomerWriteRepository, CustomerWriteRepository>();
+            service.AddScoped<ICustomerReadRepository,CustomerReadRepository>();
+            service.AddScoped<ICustomerWriteRepository, CustomerWriteRepository>();
 
-            service.AddSingleton<IOrderReadRepository, OrderReadRepository>();
-            service.AddSingleton<IOrderWriteRepository, OrderWriteRepository>();
+            service.AddScoped<IOrderReadRepository, OrderReadRepository>();
+            service.AddScoped<IOrderWriteRepository, OrderWriteRepository>();
 
-            service.AddSingleton<IProductReadRepository, ProductReadRepository>();
-            service.AddSingleton<IProductWriteRepository, ProductWriteRepository>();
+            service.AddScoped<IProductReadRepository, ProductReadRepository>();
+            service.AddScoped<IProductWriteRepository, ProductWriteRepository>();
             
         }
     }
