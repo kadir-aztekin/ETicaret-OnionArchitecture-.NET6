@@ -8,16 +8,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace ETicaret.Persistence
 {
-    public static class ServiceRegistration
+    public static class ServiceRegistration //VERİTABANINA BAGLANMA YERI
     {
         public static void AddPersistenceServices(this IServiceCollection service)
         {
+
             service.AddSingleton<IProductService, ProductService>();
-            service.AddDbContext<ETicaretDbContext>(options => options.UseNpgsql(
-                "User ID=root;Password=1234;Host=localhost;Port=5432;Database=ETicaret;"));
+            service.AddDbContext<ETicaretDbContext>(options => options.UseNpgsql("User ID=postgres;Password=1234;Host=localhost;Port=5432;Database=ETicaretDb;"));
         }
     }
 }
