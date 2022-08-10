@@ -9,6 +9,12 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using ETicaret.Application.Repositories.ICustomerRepository;
+using ETicaret.Application.Repositories.IOrderRepository;
+using ETicaret.Application.Repositories.IProductRepository;
+using ETicaret.Persistence.Repositories.CustomerRepository;
+using ETicaret.Persistence.Repositories.OrderRepository;
+using ETicaret.Persistence.Repositories.ProductRepositry;
 
 namespace ETicaret.Persistence
 {
@@ -16,9 +22,19 @@ namespace ETicaret.Persistence
     {
         public static void AddPersistenceServices(this IServiceCollection service)
         {
-
             service.AddSingleton<IProductService, ProductService>();
-            service.AddDbContext<ETicaretDbContext>(options => options.UseNpgsql("User ID=postgres;Password=1234;Host=localhost;Port=5432;Database=ETicaretDb;"));
+            service.AddDbContext<ETicaretDbContext>(options => options.UseNpgsql
+            ("User ID=postgres;Password=1234;Host=localhost;Port=5432;Database=ETicaretDb;"),ServiceLifetime.Singleton);
+
+            service.AddSingleton<ICustomerReadRepository,CustomerReadRepository>();
+            service.AddSingleton<ICustomerWriteRepository, CustomerWriteRepository>();
+
+            service.AddSingleton<IOrderReadRepository, OrderReadRepository>();
+            service.AddSingleton<IOrderWriteRepository, OrderWriteRepository>();
+
+            service.AddSingleton<IProductReadRepository, ProductReadRepository>();
+            service.AddSingleton<IProductWriteRepository, ProductWriteRepository>();
+            
         }
     }
 }
