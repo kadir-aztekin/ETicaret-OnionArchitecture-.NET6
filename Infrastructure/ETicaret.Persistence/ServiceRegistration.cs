@@ -23,8 +23,7 @@ namespace ETicaret.Persistence
         public static void AddPersistenceServices(this IServiceCollection service)
         {
             service.AddSingleton<IProductService, ProductService>();
-            service.AddDbContext<ETicaretDbContext>(options => options.UseNpgsql(
-                "User ID=postgres;Password=1234;Host=localhost;Port=5432;Database=ETicaretDb;"));
+            service.AddDbContext<ETicaretDbContext>(options => options.UseNpgsql("User ID=postgres;Password=1234;Host=localhost;Port=5432;Database=ETicaretDb;"));
 
             service.AddScoped<ICustomerReadRepository,CustomerReadRepository>();
             service.AddScoped<ICustomerWriteRepository, CustomerWriteRepository>();
