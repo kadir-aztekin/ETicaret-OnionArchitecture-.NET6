@@ -29,39 +29,10 @@ namespace ETicaret.PresentationAPI.Controllers
             _aaRead = aaRead;
         }
         [HttpGet]
-        public IActionResult GetProducts()
+        public async Task<IActionResult> Get()
         {
-            var products = _productService.GetProducts();
-            return Ok(products);
+            return Ok("Merhaba");
         }
-        [HttpGet("get")]
-        public async Task Get()
-        {
-           Order order =await  _aaRead.GetByIdAsync("5141ef1d-96f9-42d8-a1b7-3ceb9f07943c");
-            order.Address = "Kars";
-            await _aa.SaveAsync();
-
-            //var customerId = Guid.NewGuid();
-            //await _aaReadRepository.AddAsync(new() { Id = customerId, Name = "Kadir" });
-            //await _aa.AddAsync(new() { Description = "vfafa", Address = "Ankara" ,CustomerId=customerId});
-            //await _aa.AddAsync(new() { Description = "blabalbal", Address = "Çorum", CustomerId = customerId });
-            //await _aa.SaveAsync();
-           //await _productWriteRepository.AddAsync(new() { Name = "C Product", Price = 1.588F, Stock = 10, CreatedDate = DateTime.UtcNow });
-           // await _productWriteRepository.SaveAsync();
-        }
-        [HttpGet("getid")]
-        public async Task<IActionResult> Get(string id)
-        {
-           //Product product= await _productReadRepository.GetByIdAsync(id);
-            return Ok();
-        }
-        [HttpGet("getsıngle")]
-        public async Task<IActionResult> GetSingleAsync(Guid id)
-        {
-           
-            //Product product = await _productReadRepository.GetSingleAsync(x=>x.Id==id);
-            return Ok();
-            
-        }
+        
     }
 }
