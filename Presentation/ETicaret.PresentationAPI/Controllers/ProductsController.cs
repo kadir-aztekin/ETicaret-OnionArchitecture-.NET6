@@ -1,38 +1,38 @@
-﻿using ETicaret.Application.Abstactions;
-using ETicaret.Application.Repositories.ICustomerRepository;
-using ETicaret.Application.Repositories.IOrderRepository;
-using ETicaret.Application.Repositories.IProductRepository;
-using ETicaret.Domain.Entites;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using ETicaret.Domain.Entites;
+using ETicaret.Domain.Entites.Common;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace ETicaret.PresentationAPI.Controllers
+namespace ETicaret.Persistence.Context
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class ProductsController : ControllerBase
+    public class ETicaretDbContext : DbContext
     {
-        private readonly IProductWriteRepository _productWriteRepository;
-        private readonly IProductReadRepository _productReadRepository;
-        private readonly IProductService _productService;
+        public ETicaretDbContext(DbContextOptions options) : base(options)
+        {
+        }
+        public DbSet<Product> Products { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<Customer> Customers { get; set; }
 
-        readonly private IOrderWriteRepository _aa;
-        readonly private IOrderReadRepository _aaRead;
-        readonly private ICustomerWriteRepository _aaReadRepository;
-        public ProductsController(IProductService productService, IProductReadRepository productReadRepository, IProductWriteRepository productWriteRepository, IOrderWriteRepository aa, ICustomerWriteRepository aaReadRepository, IOrderReadRepository aaRead)
+        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
-            _productService = productService;
-            _productReadRepository = productReadRepository;
-            _productWriteRepository = productWriteRepository;
-            _aa = aa;
-            _aaReadRepository = aaReadRepository;
-            _aaRead = aaRead;
+            //ChangeTracker: Entityler üzerinden yapılan degısıklerın yada yeni eklenen verinin yakalanması saglayan propdır
+            //Track edilen verileri yakalayıp elde etmemızı saglar
+            var datas = ChangeTracker.Entries<BaseEntity>();
+            foreach (var data in datas)
+            {
+                var result = data.State switch
+                {
+                    EntityState.Added => data.Entity.CreatedDate = DateTime.UtcNow,
+                    EntityState.Modified => data.Entity.UpdatedDate = DateTime.UtcNow,
+                    _ => DateTime.UtcNow,
+                };
+            }
+            return await base.SaveChangesAsync(cancellationToken);
         }
-        [HttpGet]
-        public async Task<IActionResult> Get()
-        {
-            return Ok("Merhaba");
-        }
-        
     }
 }
