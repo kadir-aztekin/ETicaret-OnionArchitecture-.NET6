@@ -22,13 +22,14 @@ namespace ETicaret.Persistence.Context
         {
             //ChangeTracker: Entityler üzerinden yapılan degısıklerın yada yeni eklenen verinin yakalanması saglayan propdır
             //Track edilen verileri yakalayıp elde etmemızı saglar
-            var datas= ChangeTracker.Entries<BaseEntity>();
+            var datas = ChangeTracker.Entries<BaseEntity>();
             foreach (var data in datas)
             {
                 var result = data.State switch
                 {
                     EntityState.Added => data.Entity.CreatedDate = DateTime.UtcNow,
-                    EntityState.Modified => data.Entity.UpdatedDate = DateTime.UtcNow
+                    EntityState.Modified => data.Entity.UpdatedDate = DateTime.UtcNow,
+                    _ => DateTime.UtcNow,
                 };
             }
             return await base.SaveChangesAsync(cancellationToken);
